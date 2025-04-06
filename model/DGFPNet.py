@@ -11,7 +11,6 @@ import cv2
 
 import model.resnet as models
 import model.vgg as vgg_models
-from model.ASPP import ASPP
 from model.PPM import PPM
 from model.PSPNet import OneModel as PSPNet
 from util.util import get_train_val_set
@@ -471,13 +470,13 @@ class OneModel(nn.Module):
         supp_feat_comple = torch.cat(supp_feat_comple_list, 1).mean(1)
 
         # MDFEDM_feature_enrichment_part
-        query_feat, out_list = self.feature_enrichment_part(self, query_feat, supp_feat, supp_feat_main,
+        query_feat, out_list = self.feature_enrichment_part(query_feat, supp_feat, supp_feat_main,
                                                             supp_feat_comple, corr_attention_mask)
         # MDFEDM_segmentation_part
         corr_attention_org = corr_query_mask3 * corr_query_mask4 * (1.0-base_map)
-        pseudo_feat_mask_fore,pseudo_feat_fore = self.segment_part_pseudo_mask(self, corr_attention_org, corr_attention_mask,
+        pseudo_feat_mask_fore,pseudo_feat_fore = self.segment_part_pseudo_mask(corr_attention_org, corr_attention_mask,
                                                               query_feat_org, supp_feat_main, 1)
-        pseudo_feat_mask_back,pseudo_feat_back = self.segment_part_pseudo_mask(self, corr_attention_org, corr_attention_mask,
+        pseudo_feat_mask_back,pseudo_feat_back = self.segment_part_pseudo_mask(corr_attention_org, corr_attention_mask,
                                                               query_feat_org, supp_feat_main, 0)
         pseudo_feat_mask = pseudo_feat_mask_fore * corr_attention_org + pseudo_feat_mask_back * corr_attention_org
 
