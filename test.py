@@ -23,7 +23,7 @@ from torch.utils.data.distributed import DistributedSampler
 
 from tensorboardX import SummaryWriter
 
-from model import BAM
+from model import DGFPNet
 
 from util import dataset
 from util import transform, transform_tri, config
@@ -41,7 +41,7 @@ seed_array = np.random.randint(0,1000,val_num)    # seed->[0,999]
 
 def get_parser():
     parser = argparse.ArgumentParser(description='PyTorch Few-Shot Semantic Segmentation')
-    parser.add_argument('--arch', type=str, default='BAM') 
+    parser.add_argument('--arch', type=str, default='DGFPNet') 
     parser.add_argument('--viz', action='store_true', default=False)
     parser.add_argument('--config', type=str, default='config/coco/coco_split3_resnet50.yaml', help='config file') # coco/coco_split0_resnet50.yaml
     parser.add_argument('--opts', help='see config/ade20k/ade20k_pspnet50.yaml for all options', default=None, nargs=argparse.REMAINDER)
