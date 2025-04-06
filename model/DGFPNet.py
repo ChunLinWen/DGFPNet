@@ -473,12 +473,11 @@ class OneModel(nn.Module):
         query_feat, out_list = self.feature_enrichment_part(query_feat, supp_feat, supp_feat_main,
                                                             supp_feat_comple, corr_attention_mask)
         # MDFEDM_segmentation_part
-        corr_attention_org = corr_query_mask3 * corr_query_mask4 * (1.0-base_map)
-        pseudo_feat_mask_fore,pseudo_feat_fore = self.segment_part_pseudo_mask(corr_attention_org, corr_attention_mask,
+        pseudo_feat_mask_fore,pseudo_feat_fore = self.segment_part_pseudo_mask(corr_attention_mask,
                                                               query_feat_org, supp_feat_main, 1)
-        pseudo_feat_mask_back,pseudo_feat_back = self.segment_part_pseudo_mask(corr_attention_org, corr_attention_mask,
+        pseudo_feat_mask_back,pseudo_feat_back = self.segment_part_pseudo_mask(corr_attention_mask,
                                                               query_feat_org, supp_feat_main, 0)
-        pseudo_feat_mask = pseudo_feat_mask_fore * corr_attention_org + pseudo_feat_mask_back * corr_attention_org
+        pseudo_feat_mask = pseudo_feat_mask_fore * corr_attention_mask + pseudo_feat_mask_back * corr_attention_mask
 
         query_feat = self.res3(torch.cat([query_feat, pseudo_feat_mask], 1)) + query_feat  # res2连个3*3卷积
         meta_out = self.cls(query_feat)
@@ -583,8 +582,8 @@ class OneModel(nn.Module):
         que_feat_3_comple_proto_arr = torch.cat(que_feat_3_comple_proto_arr, dim=0)  # [1,b,256,1,1]
         return que_feat_3_comple_proto_arr
 
-    def segment_part_pseudo_mask(self, corr_attention_org, corr_attention_mask, query_feat_org, supp_feat_main,FB_flag):
-        corr_query_mask = corr_attention_org
+    def segment_part_pseudo_mask(self,corr_attention_mask, query_feat_org, supp_feat_main,FB_flag):
+        corr_query_mask = corr_attention_mask.clone()
         if FB_flag == 1:# fore
             corr_query_mask[corr_attention_mask < 0.35] = 0
             corr_query_mask[corr_attention_mask >= 0.35] = 1
