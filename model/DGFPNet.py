@@ -437,7 +437,7 @@ class OneModel(nn.Module):
             supp_feat_main_list.append(tmp_supp_feat_single_proto.unsqueeze(1))
 
             # DGSM_final_comple_prototype
-            que_feat_3_comple_proto_arr = self.get_comple_prototype(self, bsize, supp_feat_3_proto_index_all, supp_feat_temp, area)
+            que_feat_3_comple_proto_arr = self.get_comple_prototype(bsize, supp_feat_3_proto_index_all, supp_feat_temp, area)
             supp_feat_comple_list.append(que_feat_3_comple_proto_arr.unsqueeze(1))
             supp_feat_list.append((supp_feat_inter * supp_feat_inter_temp).unsqueeze(1))
         # final_mask
