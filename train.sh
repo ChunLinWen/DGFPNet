@@ -5,7 +5,7 @@ GPU_ID=0,1,2,3
 dataset=coco # pascal coco
 exp_name=split0
 
-arch=BAM
+arch=DGFPNet
 net=resnet50 # vgg resnet50
 
 exp_dir=exp/${dataset}/${arch}/${exp_name}/${net}
